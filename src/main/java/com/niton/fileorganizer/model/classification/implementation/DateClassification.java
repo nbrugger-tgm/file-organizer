@@ -1,9 +1,10 @@
 package com.niton.fileorganizer.model.classification.implementation;
 
-import com.niton.fileorganizer.controller.classification.DateClassificationEditorController;
-import com.niton.fileorganizer.gui.classification.editors.DateClassificationEditor;
+import com.niton.fileorganizer.controller.classification.specific.DateClassificationEditorController;
+import com.niton.fileorganizer.gui.classification.editors.specific.DateClassificationEditor;
 import com.niton.fileorganizer.model.classification.Classification;
 import com.niton.fileorganizer.model.classification.ClassificationType;
+import com.niton.fileorganizer.model.classification.types.DateType;
 import com.niton.media.filesystem.NFile;
 
 import javax.swing.*;
@@ -16,14 +17,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Locale;
 
-public class DateClassification extends Classification<DateClassificationEditorController> {
+public class DateClassification extends Classification {
     DateTimeFormatter formatter =
             DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
                     .withLocale(Locale.getDefault())
                     .withZone(ZoneId.systemDefault());
     private SourceAttribute source = SourceAttribute.CreationTime;
-    public DateClassification(ClassificationType type) {
-        super(type);
+    private String pattern;
+    public DateClassification() {
+        super(new DateType());
     }
 
     public void setSource(SourceAttribute source) {
@@ -35,9 +37,12 @@ public class DateClassification extends Classification<DateClassificationEditorC
         return formatter.format(((FileTime) Files.getAttribute(file.getPath(), source.attr, LinkOption.NOFOLLOW_LINKS)).toInstant());
     }
 
-    @Override
-    protected JPanel createEditorPanel(DateClassificationEditorController controller) {
-        return new DateClassificationEditor(controller);
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
     }
 
     public enum SourceAttribute {
@@ -52,4 +57,7 @@ public class DateClassification extends Classification<DateClassificationEditorC
         private final String attr;
     }
 
+    public SourceAttribute getSource() {
+        return source;
+    }
 }

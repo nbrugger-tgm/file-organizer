@@ -1,13 +1,14 @@
 package com.niton.fileorganizer.model.classification;
 
+import com.niton.fileorganizer.controller.ClassificationController;
 import com.niton.fileorganizer.controller.classification.ClassificationEditorController;
-import com.niton.fileorganizer.controller.classification.DateClassificationEditorController;
 import com.niton.media.filesystem.NFile;
 
 import javax.swing.*;
 import java.io.IOException;
 
-public abstract class Classification<C extends ClassificationEditorController> {
+
+public abstract class Classification {
     private final ClassificationType type;
     private String name;
 
@@ -15,7 +16,6 @@ public abstract class Classification<C extends ClassificationEditorController> {
         this.type = type;
     }
     public abstract String classify(NFile file) throws IOException;
-    protected abstract JPanel createEditorPanel(C controller);
 
     public String getName() {
         return name;
@@ -25,4 +25,11 @@ public abstract class Classification<C extends ClassificationEditorController> {
         this.name = name;
     }
 
+    public ClassificationType getType() {
+        return type;
+    }
+
+    public ClassificationEditorController createController(ClassificationController superController){
+        return getType().createController(this,superController);
+    }
 }

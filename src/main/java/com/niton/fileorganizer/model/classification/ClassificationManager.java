@@ -1,10 +1,17 @@
 package com.niton.fileorganizer.model.classification;
 
+import com.niton.fileorganizer.controller.classification.ClassificationEditorController;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ClassificationManager {
     private List<ClassificationType> types = new ArrayList<>();
+    private List<Classification> classifications = new ArrayList<>();
+
+
     public void register(ClassificationType type){
         types.add(type);
     }
@@ -15,7 +22,8 @@ public class ClassificationManager {
         }
         return null;
     }
-    private List<Classification<D>> classifications = new ArrayList<>();
+
+
     public void addClassificationType(ClassificationType type){
         types.add(type);
     }
@@ -23,14 +31,15 @@ public class ClassificationManager {
         types.add(type);
     }
 
-    public void addClassification(Classification<D> type){
-        classifications.add(type);
+    public void createClassifier(String name,String type){
+        ClassificationType realType = getClassificationType(type);
+        classifications.add(realType.createNewClassification(name));
     }
-    public void removeClassification(Classification<D> type){
-        classifications.add(type);
+    public void removeClassification(Classification name){
+        classifications.remove(name);
     }
 
-    public List<Classification<D>> getClassifications() {
+    public List<Classification> getClassifications() {
         return classifications;
     }
 
@@ -38,12 +47,15 @@ public class ClassificationManager {
         return types;
     }
 
-    public Classification<D> getClassification(String name){
-        for (Classification<D> type : classifications) {
+    public Classification getClassification(String name){
+        for (Classification type : classifications) {
             if(type.getName().equals(name))
                 return type;
         }
         return null;
     }
 
+    public void addClassification(Classification classification) {
+        classifications.add(classification);
+    }
 }

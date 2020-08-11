@@ -15,7 +15,7 @@ plugins {
  */
 def useMavenRepos = true
 def isApplication = true
-def mainClass = 'com.niton.file-organizer.Launcher'
+def mainClass = 'com.niton.fileorganizer.Launcher'
 dependencies {
     implementation 'com.formdev:flatlaf:0.39'
     implementation 'com.niton:media-api:2.8.5'

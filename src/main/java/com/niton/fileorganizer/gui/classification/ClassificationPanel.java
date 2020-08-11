@@ -1,6 +1,8 @@
-package com.niton.fileorganizer.gui;
+package com.niton.fileorganizer.gui.classification;
 
 import com.niton.fileorganizer.controller.ClassificationController;
+import com.niton.fileorganizer.gui.classification.editors.RootClassificationEditor;
+import com.niton.fileorganizer.model.classification.Classification;
 
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
@@ -11,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import java.awt.Font;
+import java.util.List;
+import java.awt.GridLayout;
 
 public class ClassificationPanel extends JPanel {
 	private JPanel editorPanel;
@@ -18,6 +22,7 @@ public class ClassificationPanel extends JPanel {
 	private JButton addButton;
 	private JButton btnRemove;
 	private ClassificationController controller;
+	private JLabel lblEditor;
 
 	/**
 	 * Create the panel.
@@ -34,15 +39,22 @@ public class ClassificationPanel extends JPanel {
 		JLabel headText = new JLabel("Classifications");
 		headText.setFont(new Font("Roboto Medium", Font.PLAIN, 23));
 		GridBagConstraints gbc_headText = new GridBagConstraints();
-		gbc_headText.gridwidth = 2;
 		gbc_headText.insets = new Insets(0, 0, 5, 5);
 		gbc_headText.gridx = 0;
 		gbc_headText.gridy = 0;
 		add(headText, gbc_headText);
 		
+		lblEditor = new JLabel("Editor");
+		lblEditor.setFont(new Font("Roboto Medium", Font.PLAIN, 23));
+		GridBagConstraints gbc_lblEditor = new GridBagConstraints();
+		gbc_lblEditor.insets = new Insets(0, 0, 5, 0);
+		gbc_lblEditor.gridx = 1;
+		gbc_lblEditor.gridy = 0;
+		add(lblEditor, gbc_lblEditor);
+		
 		JPanel listingPanel = new JPanel();
 		GridBagConstraints gbc_listingPanel = new GridBagConstraints();
-		gbc_listingPanel.insets = new Insets(0, 0, 0, 5);
+		gbc_listingPanel.insets = new Insets(0, 5, 5, 5);
 		gbc_listingPanel.fill = GridBagConstraints.BOTH;
 		gbc_listingPanel.gridx = 0;
 		gbc_listingPanel.gridy = 1;
@@ -83,16 +95,12 @@ public class ClassificationPanel extends JPanel {
 		
 		editorPanel = new JPanel();
 		GridBagConstraints gbc_editorPanel = new GridBagConstraints();
+		gbc_editorPanel.insets = new Insets(0, 0, 5, 5);
 		gbc_editorPanel.fill = GridBagConstraints.BOTH;
 		gbc_editorPanel.gridx = 1;
 		gbc_editorPanel.gridy = 1;
 		add(editorPanel, gbc_editorPanel);
-		GridBagLayout gbl_editorPanel = new GridBagLayout();
-		gbl_editorPanel.columnWidths = new int[]{0};
-		gbl_editorPanel.rowHeights = new int[]{0};
-		gbl_editorPanel.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_editorPanel.rowWeights = new double[]{Double.MIN_VALUE};
-		editorPanel.setLayout(gbl_editorPanel);
+		editorPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		registerListeners();
 	}
 
@@ -102,4 +110,18 @@ public class ClassificationPanel extends JPanel {
 		classificationList.addListSelectionListener(controller::selectClassification);
 	}
 
+	public void updateClassificationList(List<Classification> classifications) {
+		classificationList.setListData(classifications.stream().map(Classification::getName).toArray(i -> new String[i]));
+		classificationList.repaint();
+	}
+
+	public String getSelectedClassification() {
+		return  classificationList.getSelectedValue();
+	}
+
+	public void showEditor(RootClassificationEditor ui) {
+		editorPanel.removeAll();
+		editorPanel.add(ui);
+		editorPanel.validate();
+	}
 }

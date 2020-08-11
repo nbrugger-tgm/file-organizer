@@ -1,5 +1,8 @@
 package com.niton.fileorganizer.gui;
 
+import com.niton.fileorganizer.model.classification.ClassificationManager;
+import com.niton.fileorganizer.model.classification.ClassificationType;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
@@ -20,16 +23,17 @@ public class CreateClassificationDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField nameInput;
-	private JComboBox typeChooser;
+	private JComboBox<String> typeChooser;
 	private final Object lock = new Object();
 	private boolean done = false;
 	/**
 	 * Launch the application.
 	 */
-	public static CreateClassificationDialog showDialog() {
+	public static CreateClassificationDialog showDialog(ClassificationManager manager) {
 		try {
-			CreateClassificationDialog dialog = new CreateClassificationDialog();
+			CreateClassificationDialog dialog = new CreateClassificationDialog(manager);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			//dialog.setModalityType(ModalityType.TOOLKIT_MODAL);
 			dialog.setVisible(true);
 			return dialog;
 		} catch (Exception e) {
@@ -41,7 +45,7 @@ public class CreateClassificationDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public CreateClassificationDialog() {
+	public CreateClassificationDialog(ClassificationManager manager) {
 		setBounds(100, 100, 444, 133);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -81,7 +85,7 @@ public class CreateClassificationDialog extends JDialog {
 			contentPanel.add(lblType, gbc_lblType);
 		}
 		{
-			typeChooser = new JComboBox();
+			typeChooser = new JComboBox<>(manager.getTypes().stream().map(ClassificationType::getDisplayName).toArray(i -> new String[i]));
 			GridBagConstraints gbc_typeChooser = new GridBagConstraints();
 			gbc_typeChooser.fill = GridBagConstraints.HORIZONTAL;
 			gbc_typeChooser.gridx = 1;
@@ -132,5 +136,13 @@ public class CreateClassificationDialog extends JDialog {
 			}
 		}
 		return done;
+	}
+
+	public String getTypeInput() {
+		return (String) typeChooser.getSelectedItem();
+	}
+
+	public String getNameInput() {
+		return nameInput.getText();
 	}
 }

@@ -1,5 +1,7 @@
 package com.niton.fileorganizer.gui.classification.editors;
 
+import com.niton.fileorganizer.controller.classification.ClassificationEditorController;
+
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
@@ -7,16 +9,20 @@ import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
 import java.awt.GridLayout;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
 
 public class RootClassificationEditor extends JPanel {
-	private JTextField textField;
+	private JTextField typeDisplay;
 	private JTextField nameEditer;
 	private JPanel editorPane;
+	private ClassificationEditorController controller;
 
 	/**
 	 * Create the panel.
 	 */
-	public RootClassificationEditor() {
+	public RootClassificationEditor(ClassificationEditorController controller) {
+		this.controller = controller;
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{200, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0};
@@ -32,15 +38,15 @@ public class RootClassificationEditor extends JPanel {
 		gbc_lblType.gridy = 0;
 		add(lblType, gbc_lblType);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 0;
-		add(textField, gbc_textField);
-		textField.setColumns(10);
+		typeDisplay = new JTextField();
+		typeDisplay.setEditable(false);
+		GridBagConstraints gbc_typeDisplay = new GridBagConstraints();
+		gbc_typeDisplay.insets = new Insets(0, 0, 5, 0);
+		gbc_typeDisplay.fill = GridBagConstraints.HORIZONTAL;
+		gbc_typeDisplay.gridx = 1;
+		gbc_typeDisplay.gridy = 0;
+		add(typeDisplay, gbc_typeDisplay);
+		typeDisplay.setColumns(10);
 		
 		JLabel lblName = new JLabel("Name");
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
@@ -68,6 +74,37 @@ public class RootClassificationEditor extends JPanel {
 		add(editorPane, gbc_editorPane);
 		editorPane.setLayout(new GridLayout(1, 0, 0, 0));
 
+		registerListeners();
+
 	}
 
+	private void registerListeners() {
+		nameEditer.addInputMethodListener(new InputMethodListener() {
+			@Override
+			public void inputMethodTextChanged(InputMethodEvent event) {
+				controller.pollNameFromUI();
+			}
+			@Override
+			public void caretPositionChanged(InputMethodEvent event) {}
+		});
+		nameEditer.addActionListener(e -> controller.pollNameFromUI());
+	}
+
+	public void setEditor(SpecificClassifierEditor dateClassificationEditor) {
+		editorPane.removeAll();
+		editorPane.add(dateClassificationEditor);
+		editorPane.validate();
+    }
+
+	public String getNameInput() {
+		return nameEditer.getText();
+	}
+
+	public void showName(String name) {
+		nameEditer.setText(name);
+	}
+
+	public void showType(String displayName) {
+		typeDisplay.setText(displayName);
+	}
 }
