@@ -15,8 +15,10 @@ plugins {
  */
 def useMavenRepos = true
 def isApplication = true
-def mainClass = 'com.project.App'
-def _dependencies = {
+def mainClass = 'com.niton.file-organizer.Launcher'
+dependencies {
+    implementation 'com.formdev:flatlaf:0.39'
+    implementation 'com.niton:media-api:2.8.5'
     // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
     // Use JUnit Jupiter Engine for testing.
@@ -31,9 +33,6 @@ repositories {
     jcenter()
 }
 
-dependencies {
-   _dependencies
-}
 if(isApplication) {
     application {
         mainClassName = mainClass
@@ -41,6 +40,5 @@ if(isApplication) {
 }
 
 test {
-    // Use junit platform for unit tests
     useJUnitPlatform()
 }
