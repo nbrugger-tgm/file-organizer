@@ -1,4 +1,4 @@
-package com.niton.fileorganizer.gui;
+package com.niton.fileorganizer.gui.scenes;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

@@ -1,34 +1,36 @@
 package com.niton.fileorganizer.controller;
 
 import com.niton.fileorganizer.controller.classification.ClassificationEditorController;
-import com.niton.fileorganizer.gui.classification.ClassificationPanel;
-import com.niton.fileorganizer.gui.CreateClassificationDialog;
-import com.niton.fileorganizer.gui.classification.editors.RootClassificationEditor;
+import com.niton.fileorganizer.gui.components.classification.ClassificationPanel;
+import com.niton.fileorganizer.gui.popups.CreateClassificationDialog;
 import com.niton.fileorganizer.model.classification.Classification;
 import com.niton.fileorganizer.model.classification.ClassificationManager;
 import com.niton.fileorganizer.model.classification.ClassificationType;
 import com.niton.fileorganizer.model.classification.types.DateType;
+import com.niton.fileorganizer.model.classification.types.ExtensionType;
+import com.niton.fileorganizer.model.classification.types.UserChoiceType;
 import com.niton.fileorganizer.model.classification.types.UserInputType;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.ActionEvent;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Serializable;
 
-public class ClassificationController {
-    private ClassificationManager manager = new ClassificationManager();
-    private ClassificationPanel UI;
+public class ClassificationController implements Serializable {
+    private final ClassificationManager manager = new ClassificationManager();
+    private transient ClassificationPanel UI;
 
 
     public ClassificationController() {
         registerClassificationTypes();
-        UI = new ClassificationPanel(this);
+        buildUI();
     }
 
     private void registerClassificationTypes() {
         manager.addClassificationType(new DateType());
         manager.addClassificationType(new UserInputType());
+        manager.addClassificationType(new UserChoiceType());
+        manager.addClassificationType(new ExtensionType());
     }
 
     public void openAddingDialog(ActionEvent actionEvent) {
@@ -37,9 +39,9 @@ public class ClassificationController {
             boolean accept = dialog.awaitUser();
             dialog.dispose();
             if (accept) {
-                ClassificationType type = manager.getClassificationType(dialog.getTypeInput());
+                ClassificationType<?> type = manager.getClassificationType(dialog.getTypeInput());
                 String name = dialog.getNameInput();
-                Classification classification = type.createNewClassification(name);
+                Classification<?> classification = type.createNewClassification(name);
                 addClassification(classification);
             }
         }
@@ -47,6 +49,10 @@ public class ClassificationController {
     }
 
     public void addClassification(Classification classification) {
+        if(manager.getClassification(classification.getName()) != null){
+            JOptionPane.showMessageDialog(UI.getRootPane(), "The name is already in use","Error",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         manager.addClassification(classification);
         updateList();
     }
@@ -61,6 +67,8 @@ public class ClassificationController {
     }
     public void selectClassification(ListSelectionEvent listSelectionEvent) {
         Classification classification = manager.getClassification(UI.getSelectedClassification());
+        if (classification == null)
+            return;
         ClassificationEditorController<?> controller = classification.createController(this);
         if(controller == null)
             controller = new ClassificationEditorController(classification,this);
@@ -70,5 +78,14 @@ public class ClassificationController {
 
     public JPanel getUI() {
         return UI;
+    }
+
+    public void buildUI() {
+        UI = new ClassificationPanel(this);
+        updateList();
+    }
+
+    public ClassificationManager getManager() {
+        return manager;
     }
 }

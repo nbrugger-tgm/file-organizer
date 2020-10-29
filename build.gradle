@@ -19,6 +19,7 @@ def mainClass = 'com.niton.fileorganizer.Launcher'
 dependencies {
     implementation 'com.formdev:flatlaf:0.39'
     implementation 'com.niton:media-api:2.8.5'
+    implementation 'com.github.mpkorstanje:simmetrics-core:4.1.1'
     // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
     // Use JUnit Jupiter Engine for testing.

@@ -1,4 +1,4 @@
-package com.niton.fileorganizer.gui;
+package com.niton.fileorganizer.gui.components;
 
 import java.util.Arrays;
 import java.util.List;

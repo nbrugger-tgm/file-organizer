@@ -18,7 +18,7 @@ public class DateType implements ClassificationType<DateClassification> {
     }
 
 	@Override
-	public ClassificationEditorController createController(DateClassification classification, ClassificationController superController) {
+	public ClassificationEditorController<DateClassification> createController(DateClassification classification, ClassificationController superController) {
 		return new DateClassificationEditorController(classification, superController);
 	}
 }

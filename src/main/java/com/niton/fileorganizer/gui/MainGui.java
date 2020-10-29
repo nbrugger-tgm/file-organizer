@@ -3,8 +3,7 @@ package com.niton.fileorganizer.gui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import javax.swing.border.LineBorder;
@@ -15,7 +14,9 @@ import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import javax.swing.JButton;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 
 public class MainGui extends JFrame {
 
@@ -23,6 +24,7 @@ public class MainGui extends JFrame {
 	private JPanel contentView;
 	private GuiController controller;
 	private JButton classificationButton;
+	private JButton btnPathbuilder;
 
 	/**
 	 * Launch the application.
@@ -44,8 +46,8 @@ public class MainGui extends JFrame {
 	 */
 	public MainGui(GuiController c) {
 		this.controller = c;
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 912, 659);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -67,9 +69,9 @@ public class MainGui extends JFrame {
 		mainPanel.add(buttonPanel, gbc_buttonPanel);
 		GridBagLayout gbl_buttonPanel = new GridBagLayout();
 		gbl_buttonPanel.columnWidths = new int[] {150, 0};
-		gbl_buttonPanel.rowHeights = new int[]{45, 45, 0};
+		gbl_buttonPanel.rowHeights = new int[]{45, 45, 45, 0};
 		gbl_buttonPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_buttonPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_buttonPanel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		buttonPanel.setLayout(gbl_buttonPanel);
 		
 		organizeBtn = new JButton("Organize");
@@ -88,6 +90,14 @@ public class MainGui extends JFrame {
 		gbc_classificationButton.gridy = 1;
 		buttonPanel.add(classificationButton, gbc_classificationButton);
 		
+		btnPathbuilder = new JButton("PathBuilder");
+		GridBagConstraints gbc_btnPathbuilder = new GridBagConstraints();
+		gbc_btnPathbuilder.insets = new Insets(5, 0, 5, 0);
+		gbc_btnPathbuilder.fill = GridBagConstraints.BOTH;
+		gbc_btnPathbuilder.gridx = 0;
+		gbc_btnPathbuilder.gridy = 2;
+		buttonPanel.add(btnPathbuilder, gbc_btnPathbuilder);
+		
 		contentView = new JPanel();
 		contentView.setBorder(new LineBorder(new Color(0, 0, 0)));
 		GridBagConstraints gbc_contentView = new GridBagConstraints();
@@ -105,6 +115,13 @@ public class MainGui extends JFrame {
 	private void registerListeners() {
 		organizeBtn.addActionListener(controller::openOrganizeView);
 		classificationButton.addActionListener(controller::openClassificationView);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				controller.onWindowClose();
+			}
+		});
+		btnPathbuilder.addActionListener(controller::openPathBuilder);
 	}
 
 	public void showView(JPanel panel) {

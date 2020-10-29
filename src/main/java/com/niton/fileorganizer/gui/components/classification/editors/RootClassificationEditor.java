@@ -1,6 +1,8 @@
-package com.niton.fileorganizer.gui.classification.editors;
+package com.niton.fileorganizer.gui.components.classification.editors;
 
 import com.niton.fileorganizer.controller.classification.ClassificationEditorController;
+import com.niton.fileorganizer.model.classification.Classification;
+import com.niton.fileorganizer.model.classification.ClassificationType;
 
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
@@ -12,16 +14,16 @@ import java.awt.GridLayout;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.InputMethodListener;
 
-public class RootClassificationEditor extends JPanel {
-	private JTextField typeDisplay;
-	private JTextField nameEditer;
-	private JPanel editorPane;
-	private ClassificationEditorController controller;
+public class RootClassificationEditor<T extends ClassificationType<C>,C extends Classification<T>> extends JPanel {
+	private final JTextField typeDisplay;
+	private final JTextField nameEditer;
+	private final JPanel editorPane;
+	private final ClassificationEditorController<C> controller;
 
 	/**
 	 * Create the panel.
 	 */
-	public RootClassificationEditor(ClassificationEditorController controller) {
+	public RootClassificationEditor(ClassificationEditorController<C> controller) {
 		this.controller = controller;
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{200, 0, 0};
@@ -89,8 +91,8 @@ public class RootClassificationEditor extends JPanel {
 		});
 		nameEditer.addActionListener(e -> controller.pollNameFromUI());
 	}
-
 	public void setEditor(SpecificClassifierEditor dateClassificationEditor) {
+
 		editorPane.removeAll();
 		editorPane.add(dateClassificationEditor);
 		editorPane.validate();

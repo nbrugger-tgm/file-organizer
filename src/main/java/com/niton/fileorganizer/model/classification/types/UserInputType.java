@@ -6,19 +6,19 @@ import com.niton.fileorganizer.model.classification.Classification;
 import com.niton.fileorganizer.model.classification.ClassificationType;
 import com.niton.fileorganizer.model.classification.implementation.UserInputClassification;
 
-public class UserInputType implements ClassificationType {
+public class UserInputType implements ClassificationType<UserInputClassification> {
     @Override
     public String getDisplayName() {
         return "Manual Input";
     }
 
     @Override
-    public Classification createNewClassification() {
+    public UserInputClassification createNewClassification() {
         return new UserInputClassification();
     }
 
     @Override
-    public ClassificationEditorController createController(Classification classification, ClassificationController controller) {
+    public ClassificationEditorController<UserInputClassification> createController(UserInputClassification classification, ClassificationController controller) {
         return null;
     }
 }

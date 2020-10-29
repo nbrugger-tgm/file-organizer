@@ -1,14 +1,12 @@
 package com.niton.fileorganizer.controller.classification;
 
 import com.niton.fileorganizer.controller.ClassificationController;
-import com.niton.fileorganizer.gui.classification.editors.RootClassificationEditor;
+import com.niton.fileorganizer.gui.components.classification.editors.RootClassificationEditor;
 import com.niton.fileorganizer.model.classification.Classification;
 
-import javax.swing.*;
-import java.awt.event.InputEvent;
-import java.awt.event.InputMethodEvent;
+import java.io.Serializable;
 
-public class ClassificationEditorController<C extends Classification> {
+public class ClassificationEditorController<C extends Classification>  implements Serializable {
     private RootClassificationEditor rootUI;
     protected C classification;
     private ClassificationController superController;

@@ -1,7 +1,7 @@
-package com.niton.fileorganizer.gui.classification;
+package com.niton.fileorganizer.gui.components.classification;
 
 import com.niton.fileorganizer.controller.ClassificationController;
-import com.niton.fileorganizer.gui.classification.editors.RootClassificationEditor;
+import com.niton.fileorganizer.gui.components.classification.editors.RootClassificationEditor;
 import com.niton.fileorganizer.model.classification.Classification;
 
 import javax.swing.JPanel;
@@ -110,8 +110,8 @@ public class ClassificationPanel extends JPanel {
 		classificationList.addListSelectionListener(controller::selectClassification);
 	}
 
-	public void updateClassificationList(List<Classification> classifications) {
-		classificationList.setListData(classifications.stream().map(Classification::getName).toArray(i -> new String[i]));
+	public void updateClassificationList(List<Classification<?>> classifications) {
+		classificationList.setListData(classifications.stream().map(Classification::getName).toArray(String[]::new));
 		classificationList.repaint();
 	}
 

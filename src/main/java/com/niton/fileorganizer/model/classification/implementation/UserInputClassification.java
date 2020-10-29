@@ -6,14 +6,12 @@ import com.niton.media.filesystem.NFile;
 
 import java.io.IOException;
 
-public class UserInputClassification extends Classification {
+public class UserInputClassification extends Classification<UserInputType> {
 
     public UserInputClassification() {
         super(new UserInputType());
     }
 
     @Override
-    public String classify(NFile file)  {
-        return "";
-    }
+    public void computePossibilities(NFile file)  {}
 }

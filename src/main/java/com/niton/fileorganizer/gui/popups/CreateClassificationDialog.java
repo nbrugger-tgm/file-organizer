@@ -1,4 +1,4 @@
-package com.niton.fileorganizer.gui;
+package com.niton.fileorganizer.gui.popups;
 
 import com.niton.fileorganizer.model.classification.ClassificationManager;
 import com.niton.fileorganizer.model.classification.ClassificationType;
@@ -30,16 +30,11 @@ public class CreateClassificationDialog extends JDialog {
 	 * Launch the application.
 	 */
 	public static CreateClassificationDialog showDialog(ClassificationManager manager) {
-		try {
-			CreateClassificationDialog dialog = new CreateClassificationDialog(manager);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			//dialog.setModalityType(ModalityType.TOOLKIT_MODAL);
-			dialog.setVisible(true);
-			return dialog;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		CreateClassificationDialog dialog = new CreateClassificationDialog(manager);
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		//dialog.setModalityType(ModalityType.TOOLKIT_MODAL);
+		dialog.setVisible(true);
+		return dialog;
 	}
 
 	/**
